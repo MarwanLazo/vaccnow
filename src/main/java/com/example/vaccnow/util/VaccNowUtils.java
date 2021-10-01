@@ -23,7 +23,7 @@ public class VaccNowUtils {
     public static String getRandomScheduledVaccinationRequest() {
         int leftLimit = 97;
         int rightLimit = 122;
-        int targetStringLength = 10;
+        int targetStringLength = 15;
 
         return new Random().ints(leftLimit, rightLimit + 1).limit(targetStringLength)
                 .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append).toString();
