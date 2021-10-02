@@ -40,4 +40,11 @@ public class ScheduleVaccinationControllerImpl extends
         return new ResponseEntity<>(models, HttpStatus.OK);
     }
 
+    @Override
+    public ResponseEntity<List<ScheduleVaccinationModel>> getAppliedVaccinationByBranchId(Integer branchId) {
+        List<ScheduleVaccination> eBs = service.getAppliedVaccinationByBranchId(branchId);
+        List<ScheduleVaccinationModel> models = mapper.mapToModel(eBs);
+        return new ResponseEntity<>(models, HttpStatus.OK);
+    }
+
 }

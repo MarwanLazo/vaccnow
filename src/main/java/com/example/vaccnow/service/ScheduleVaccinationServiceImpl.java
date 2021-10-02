@@ -87,4 +87,14 @@ public class ScheduleVaccinationServiceImpl
         return scVacc;
     }
 
+    @Override
+    public List<ScheduleVaccination> getAppliedVaccinationByBranchId(Integer branchId) {
+
+        List<ScheduleVaccination> scVacc = repo.findAll(
+                (root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("branch").get("id"), branchId));
+        log.info("Load Scheduled Vaccination Applied By Branch id: ({}) ::>> ({}) ", branchId, scVacc);
+        return scVacc;
+
+    }
+
 }

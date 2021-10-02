@@ -12,4 +12,6 @@ public interface ScheduleVaccinationService extends BaseService<ScheduleVaccinat
 
     List<ScheduleVaccination> getConfirmedVaccinations(Date from, Date to);
 
+    List<ScheduleVaccination> getAppliedVaccinationByBranchId(Integer branchId);
+
 }

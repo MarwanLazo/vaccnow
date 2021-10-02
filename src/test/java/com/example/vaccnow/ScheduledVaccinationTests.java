@@ -5,9 +5,16 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 
+import com.example.vaccnow.entity.Branch;
+import com.example.vaccnow.entity.ScheduleVaccination;
+import com.example.vaccnow.mapping.BranchMapping;
+import com.example.vaccnow.model.BranchModel;
+import com.example.vaccnow.service.BranchService;
 import com.example.vaccnow.service.ScheduleVaccinationService;
 import com.example.vaccnow.util.PaymentMethodEnum;
 import com.example.vaccnow.util.VaccNowUtils;
@@ -30,39 +37,57 @@ import org.springframework.test.web.servlet.MockMvc;
 @SpringBootTest(webEnvironment = WebEnvironment.MOCK, classes = { Application.class })
 class ScheduledVaccinationTests {
 
-    private @Autowired MockMvc mockMvc;
-    private @Autowired ScheduleVaccinationService scheduleVaccinationService;
+        private @Autowired MockMvc mockMvc;
+        private @Autowired ScheduleVaccinationService scheduleVaccinationService;
+        private @Autowired BranchService branchService;
+        private @Autowired BranchMapping branchMapper;
 
-    @BeforeEach
-    private void setup() {
+        private Branch bModel;
 
-    }
+        @Test
+        @Order(1)
+        void test_scheduleVaccination_By_payment() throws Exception {
+                mockMvc.perform(get("/scheduleVaccination/vaccination/CASH/temp1@domain.net"))
+                                .andExpect(status().isOk())
+                                .andExpect(jsonPath("$.paymentMethod", Matchers.equalTo("CASH")))
+                                .andExpect(jsonPath("$.id", Matchers.equalTo(1)));
+        }
 
-    @Test
-    @Order(1)
-    void test_scheduleVaccination_By_payment() throws Exception {
-        mockMvc.perform(get("/scheduleVaccination/vaccination/CASH/temp1@domain.net")).andExpect(status().isOk())
-                .andExpect(jsonPath("$.paymentMethod", Matchers.equalTo("CASH")))
-                .andExpect(jsonPath("$.id", Matchers.equalTo(1)));
-    }
+        @Test
+        @Order(2)
+        void test_scheduleVaccination() throws Exception {
+                Long from = VaccNowUtils.getTimeInMillis(new Date());
+                Long to = VaccNowUtils.getTimeInMillis(
+                                VaccNowUtils.add15MinuteToDate(VaccNowUtils.add15MinuteToDate(new Date())));
 
-    @Test
-    @Order(2)
-    void test_scheduleVaccination() throws Exception {
-        Long from = VaccNowUtils.getTimeInMillis(new Date());
-        Long to = VaccNowUtils
-                .getTimeInMillis(VaccNowUtils.add15MinuteToDate(VaccNowUtils.add15MinuteToDate(new Date())));
+                scheduleVaccinationService.scheduleVaccinationByPaymentMethod(PaymentMethodEnum.FAWRY,
+                                "temp11@domain.net");
+                scheduleVaccinationService.scheduleVaccinationByPaymentMethod(PaymentMethodEnum.CREDIT,
+                                "temp12@domain.net");
 
-        scheduleVaccinationService.scheduleVaccinationByPaymentMethod(PaymentMethodEnum.FAWRY, "temp1@domain.net");
-        scheduleVaccinationService.scheduleVaccinationByPaymentMethod(PaymentMethodEnum.CREDIT, "temp2@domain.net");
+                mockMvc.perform(get("/scheduleVaccination/confirmed/" + from + "/" + to)).andExpect(status().isOk())
+                                .andExpect(jsonPath("$", Matchers.hasSize(2)));
+        }
 
-        mockMvc.perform(get("/scheduleVaccination/confirmedVaccination/" + from + "/" + to)).andExpect(status().isOk())
-                .andExpect(jsonPath("$", Matchers.hasSize(2)));
-    }
+        @Test
+        @Order(3)
+        void test_applied_vaccination_by_branch() throws Exception {
+                bModel = List.<BranchModel>of(BranchModel.builder().email("E1").location("L1").name("B1").phone("P1")
+                                .workStartDate(new Date()).phone("P1").workStartDate(new Date())
+                                .workEndDate(VaccNowUtils.add15MinuteToDate(new Date())).build()).stream()
+                                .map(branchMapper::mapToEntity).map(branchService::create).findFirst().get();
 
-    @AfterEach
-    private void tearDown() throws Exception {
-        scheduleVaccinationService.deleteAll();
+                scheduleVaccinationService.create(ScheduleVaccination.builder().branch(bModel).email("ttemp@domain.net")
+                                .vacDesc("vacDesc").vacTime(VaccNowUtils.add15MinuteToDate(new Date())).build());
 
-    }
+                mockMvc.perform(get("/scheduleVaccination/appliedByBranchId/1")).andExpect(status().isOk())
+                                .andExpect(jsonPath("$", Matchers.hasSize(1)))
+                                .andExpect(jsonPath("$[0].branch.id", Matchers.equalTo(1)));
+        }
+
+        @AfterEach
+        private void tearDown() throws Exception {
+                scheduleVaccinationService.deleteAll();
+                branchService.deleteAll();
+        }
 }

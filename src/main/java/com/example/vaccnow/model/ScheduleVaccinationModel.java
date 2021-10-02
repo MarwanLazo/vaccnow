@@ -24,4 +24,8 @@ public class ScheduleVaccinationModel implements BaseModel {
 
     private Date vacTime;
 
+    private BranchModel branch;
+
+    private boolean confirmed;
+
 }

@@ -5,8 +5,6 @@ import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Convert;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -58,6 +56,10 @@ public class ScheduleVaccination extends BaseEntity<Integer> {
 
     @Column(name = "schedule_vac_confirm")
     private boolean confirmed;
+
+    @ManyToOne
+    @JoinColumn(referencedColumnName = "branch_id", name = "schd_vac_branch_id")
+    private Branch branch;
 
     @Override
     public Integer getPK() {
