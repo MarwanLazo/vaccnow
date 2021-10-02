@@ -60,7 +60,7 @@ public class BaseMappingImpl<EN extends BaseEntity<? extends Serializable>, Mode
 	}
 
 	@Override
-	public void map(EN target, EN source) {
+	public void map(EN source, EN target) {
 		mapper.map(source, target);
 	}
 
