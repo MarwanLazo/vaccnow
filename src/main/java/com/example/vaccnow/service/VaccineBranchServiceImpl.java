@@ -53,8 +53,8 @@ public class VaccineBranchServiceImpl extends BaseServiceImpl<VaccineBranch, Vac
                 Optional<Branch> branch = branchRepository.findById(branchId);
                 Optional<Vaccine> vaccine = vaccineRepository.findById(vaccineId);
                 if (branch.isPresent() && vaccine.isPresent()) {
-                        repo.deleteById(VaccineBranchPK.builder().branchId(branch.get()).vaccine(vaccine.get())
-                                        .build());
+                        repo.findById(VaccineBranchPK.builder().branchId(branch.get()).vaccine(vaccine.get()).build())
+                                        .ifPresent(repo::delete);
                         return create(VaccineBranch.builder().id(
                                         VaccineBranchPK.builder().branchId(branch.get()).vaccine(vaccine.get()).build())
                                         .build());

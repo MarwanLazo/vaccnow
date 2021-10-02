@@ -8,7 +8,11 @@ import com.example.vaccnow.service.VaccineBranchService;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
+@RestController
+@RequestMapping({ "vaccineBranch" })
 public class VaccineBranchControllerImpl extends
         BaseControllerImpl<VaccineBranchModel, VaccineBranchPK, VaccineBranch, VaccineBranchService, VaccineBranchMapping>
         implements VaccineBranchController {
