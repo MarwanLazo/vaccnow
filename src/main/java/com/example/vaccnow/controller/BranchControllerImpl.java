@@ -54,8 +54,8 @@ public class BranchControllerImpl extends BaseControllerImpl<BranchModel, Intege
     }
 
     private void setDatesStartEnd(BranchModel model) {
-        model.setWorkStartDate(VaccNowUtils.addHoursToDate(new Date(), model.getWorkStartHour()));
-        model.setWorkEndDate(VaccNowUtils.addHoursToDate(new Date(), model.getWorkEndHour()));
+        model.setWorkStartDate(VaccNowUtils.setHoursToDate(new Date(), model.getWorkStartHour()));
+        model.setWorkEndDate(VaccNowUtils.setHoursToDate(new Date(), model.getWorkEndHour()));
     }
 
 }

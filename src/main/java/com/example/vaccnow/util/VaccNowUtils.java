@@ -46,4 +46,12 @@ public class VaccNowUtils {
         return calendar.getTime();
     }
 
+    public static Date setHoursToDate(Date date, Integer hours) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.clear();
+        calendar.setTime(date);
+        calendar.set(Calendar.HOUR_OF_DAY, hours);
+        return calendar.getTime();
+    }
+
 }
