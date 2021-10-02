@@ -1,13 +1,16 @@
 package com.example.vaccnow.service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import com.example.vaccnow.entity.Branch;
 import com.example.vaccnow.entity.Vaccine;
 import com.example.vaccnow.entity.VaccineBranch;
 import com.example.vaccnow.entity.VaccineBranchPK;
+import com.example.vaccnow.repository.BranchRepository;
 import com.example.vaccnow.repository.VaccineBranchRepository;
+import com.example.vaccnow.repository.VaccineRepository;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,14 +19,14 @@ import org.springframework.transaction.annotation.Transactional;
 public class VaccineBranchServiceImpl extends BaseServiceImpl<VaccineBranch, VaccineBranchPK, VaccineBranchRepository>
                 implements VaccineBranchService {
 
-        private VaccineService vaccineService;
-        private BranchService branchService;
+        private VaccineRepository vaccineRepository;
+        private BranchRepository branchRepository;
 
-        public VaccineBranchServiceImpl(VaccineBranchRepository repo, VaccineService vaccineService,
-                        BranchService branchService) {
+        public VaccineBranchServiceImpl(VaccineBranchRepository repo, VaccineRepository vaccineRepository,
+                        BranchRepository branchRepository) {
                 super(repo);
-                this.vaccineService = vaccineService;
-                this.branchService = branchService;
+                this.vaccineRepository = vaccineRepository;
+                this.branchRepository = branchRepository;
         }
 
         @Override
@@ -47,11 +50,16 @@ public class VaccineBranchServiceImpl extends BaseServiceImpl<VaccineBranch, Vac
         @Override
         @Transactional
         public VaccineBranch saveVaccineBranch(Integer branchId, Integer vaccineId) {
-                Branch branch = branchService.findById(branchId);
-                Vaccine vaccine = vaccineService.findById(vaccineId);
-                repo.deleteById(VaccineBranchPK.builder().branchId(branch).vaccine(vaccine).build());
-                return create(VaccineBranch.builder()
-                                .id(VaccineBranchPK.builder().branchId(branch).vaccine(vaccine).build()).build());
+                Optional<Branch> branch = branchRepository.findById(branchId);
+                Optional<Vaccine> vaccine = vaccineRepository.findById(vaccineId);
+                if (branch.isPresent() && vaccine.isPresent()) {
+                        repo.deleteById(VaccineBranchPK.builder().branchId(branch.get()).vaccine(vaccine.get())
+                                        .build());
+                        return create(VaccineBranch.builder().id(
+                                        VaccineBranchPK.builder().branchId(branch.get()).vaccine(vaccine.get()).build())
+                                        .build());
+                }
+                return null;
         }
 
 }
