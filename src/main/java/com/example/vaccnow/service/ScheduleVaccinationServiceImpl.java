@@ -34,20 +34,35 @@ public class ScheduleVaccinationServiceImpl
 
     @Override
     @SneakyThrows
-    public ScheduleVaccination scheduleVaccinationByPaymentMethod(PaymentMethodEnum payment, String email) {
+    public ScheduleVaccination scheduleVaccConfirmationByPaymentEmail(PaymentMethodEnum payment, String email) {
 
         Date vacTime = null;
-        Optional<Date> data = findAll().stream().map(ScheduleVaccination::getVacTime).max(Date::compareTo);
+        Optional<Date> data = findAll().stream().filter(f -> f.getVacTime() != null)
+                .map(ScheduleVaccination::getVacTime).max(Date::compareTo);
         if (data.isPresent()) {
             vacTime = VaccNowUtils.addMinuteToDate(data.get(), 15);
         } else
             vacTime = new Date();
-        ScheduleVaccination en = ScheduleVaccination.builder().paymentMethod(payment).email(email)
-                .request(VaccNowUtils.getRandomScheduledVaccinationRequest())
-                .vacDesc("A scheduled vaccination process Done  ").vacTime(vacTime).build();
-        en = create(en);
-        log.info("Vaccination request scheduled ::({})", en);
+
+        Optional<ScheduleVaccination> scheduleVaccination = repo.findOne((root, query, criteriaBuilder) -> {
+            List<Predicate> predicates = List.<Predicate>of(criteriaBuilder.equal(root.get("email"), email),
+                    criteriaBuilder.equal(root.get("paymentMethod"), payment));
+            return criteriaBuilder.and(predicates.toArray(new Predicate[predicates.size()]));
+        });
+
+        log.info(" Schedule Vaccination .... ::({})", scheduleVaccination);
+        ScheduleVaccination en = null;
+        if (scheduleVaccination.isEmpty()) {
+            en = ScheduleVaccination.builder().paymentMethod(payment).email(email)
+                    .request(VaccNowUtils.getRandomScheduledVaccinationRequest())
+                    .vacDesc("A scheduled vaccination process Done ").vacTime(vacTime).build();
+            en = create(en);
+        } else {
+            en = scheduleVaccination.get();
+            en.setVacTime(vacTime);
+        }
         sendMail(en);
+        log.info("Vaccination request scheduled ::({})", en);
         return en;
     }
 

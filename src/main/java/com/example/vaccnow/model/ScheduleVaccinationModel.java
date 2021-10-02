@@ -28,4 +28,6 @@ public class ScheduleVaccinationModel implements BaseModel {
 
     private boolean confirmed;
 
+    private String email;
+
 }

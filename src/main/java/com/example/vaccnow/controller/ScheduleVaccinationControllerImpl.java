@@ -25,9 +25,9 @@ public class ScheduleVaccinationControllerImpl extends
     }
 
     @Override
-    public ResponseEntity<ScheduleVaccinationModel> scheduleVaccinationByPaymentMethod(PaymentMethodEnum payment,
+    public ResponseEntity<ScheduleVaccinationModel> scheduleVaccConfirmationByPaymentEmail(PaymentMethodEnum payment,
             String email) {
-        ScheduleVaccination en = service.scheduleVaccinationByPaymentMethod(payment, email);
+        ScheduleVaccination en = service.scheduleVaccConfirmationByPaymentEmail(payment, email);
         ScheduleVaccinationModel model = mapper.mapToModel(en);
         return new ResponseEntity<>(model, HttpStatus.OK);
     }

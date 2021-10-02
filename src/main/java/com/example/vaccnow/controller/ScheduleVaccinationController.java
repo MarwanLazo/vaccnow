@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 public interface ScheduleVaccinationController extends BaseController<ScheduleVaccinationModel, Integer> {
 
-        @GetMapping({ "/vaccination/{payment}/{email}" })
-        ResponseEntity<ScheduleVaccinationModel> scheduleVaccinationByPaymentMethod(
+        @GetMapping({ "/vaccination/{payment}/{email}", "/{payment}/{email}" })
+        ResponseEntity<ScheduleVaccinationModel> scheduleVaccConfirmationByPaymentEmail(
                         @PathVariable("payment") PaymentMethodEnum payment, @PathVariable("email") String email);
 
         @GetMapping({ "/confirmed/{from}/{to}" })
