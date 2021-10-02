@@ -29,6 +29,7 @@ public abstract class BaseControllerImpl<Model extends BaseModel, PK extends Ser
 
     @Override
     public ResponseEntity<Model> create(Model model) {
+        doBeforeCreate(model);
         EN en = mapper.mapToEntity(model);
         en = service.create(en);
         model = mapper.mapToModel(en);
@@ -37,6 +38,8 @@ public abstract class BaseControllerImpl<Model extends BaseModel, PK extends Ser
 
     @Override
     public ResponseEntity<Model> update(Model model) {
+        doBeforeUpdate(model);
+
         EN en = mapper.mapToEntity(model);
 
         EN saved = service.findById(en.getPK());
@@ -48,6 +51,12 @@ public abstract class BaseControllerImpl<Model extends BaseModel, PK extends Ser
         model = mapper.mapToModel(en);
 
         return new ResponseEntity<>(model, HttpStatus.OK);
+    }
+
+    protected void doBeforeCreate(Model model) {
+    }
+
+    protected void doBeforeUpdate(Model model) {
     }
 
 }

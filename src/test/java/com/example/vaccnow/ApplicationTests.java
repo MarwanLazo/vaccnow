@@ -54,7 +54,7 @@ class ApplicationTests {
 	public void setup() {
 		all_branchModels = List.<BranchModel>of(BranchModel.builder().email("E1").location("L1").name("B1").phone("P1")
 				.workStartDate(new Date()).phone("P1").workStartDate(new Date())
-				.workEndDate(VaccNowUtils.add15MinuteToDate(new Date())).build());
+				.workEndDate(VaccNowUtils.addMinuteToDate(new Date(), 15)).build());
 		all_branchModels.stream().map(branchMapper::mapToEntity).map(branchService::create)
 				.collect(Collectors.toList());
 

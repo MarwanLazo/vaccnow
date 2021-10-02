@@ -39,7 +39,7 @@ public class ScheduleVaccinationServiceImpl
         Date vacTime = null;
         Optional<Date> data = findAll().stream().map(ScheduleVaccination::getVacTime).max(Date::compareTo);
         if (data.isPresent()) {
-            vacTime = VaccNowUtils.add15MinuteToDate(data.get());
+            vacTime = VaccNowUtils.addMinuteToDate(data.get(), 15);
         } else
             vacTime = new Date();
         ScheduleVaccination en = ScheduleVaccination.builder().paymentMethod(payment).email(email)

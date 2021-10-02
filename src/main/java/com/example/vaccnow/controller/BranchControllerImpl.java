@@ -1,18 +1,14 @@
 package com.example.vaccnow.controller;
 
-import java.util.Collection;
-import java.util.Collections;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import javax.xml.crypto.Data;
 
 import com.example.vaccnow.entity.Branch;
 import com.example.vaccnow.mapping.BranchMapping;
 import com.example.vaccnow.model.BranchModel;
 import com.example.vaccnow.service.BranchService;
+import com.example.vaccnow.util.VaccNowUtils;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -45,6 +41,21 @@ public class BranchControllerImpl extends BaseControllerImpl<BranchModel, Intege
         Branch en = service.findById(id);
         Map<String, Date> workMap = Map.of("from", en.getWorkStartDate(), "to", en.getWorkEndDate());
         return new ResponseEntity<>(workMap, HttpStatus.OK);
+    }
+
+    @Override
+    protected void doBeforeCreate(BranchModel model) {
+        setDatesStartEnd(model);
+    }
+
+    @Override
+    protected void doBeforeUpdate(BranchModel model) {
+        setDatesStartEnd(model);
+    }
+
+    private void setDatesStartEnd(BranchModel model) {
+        model.setWorkStartDate(VaccNowUtils.addHoursToDate(new Date(), model.getWorkStartHour()));
+        model.setWorkEndDate(VaccNowUtils.addHoursToDate(new Date(), model.getWorkEndHour()));
     }
 
 }

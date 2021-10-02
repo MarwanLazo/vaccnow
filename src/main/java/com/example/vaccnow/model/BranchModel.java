@@ -2,6 +2,10 @@ package com.example.vaccnow.model;
 
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonFormat.Shape;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -24,5 +28,8 @@ public class BranchModel implements BaseModel {
 
     private Date workStartDate;
     private Date workEndDate;
+
+    private Integer workStartHour;
+    private Integer workEndHour;
 
 }

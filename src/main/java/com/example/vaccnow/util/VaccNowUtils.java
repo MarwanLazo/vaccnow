@@ -30,11 +30,19 @@ public class VaccNowUtils {
 
     }
 
-    public static Date add15MinuteToDate(Date date) {
+    public static Date addMinuteToDate(Date date, Integer minutes) {
         Calendar calendar = Calendar.getInstance();
         calendar.clear();
         calendar.setTime(date);
-        calendar.add(Calendar.MINUTE, 15);
+        calendar.add(Calendar.MINUTE, minutes);
+        return calendar.getTime();
+    }
+
+    public static Date addHoursToDate(Date date, Integer hours) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.clear();
+        calendar.setTime(date);
+        calendar.add(Calendar.HOUR_OF_DAY, hours);
         return calendar.getTime();
     }
 

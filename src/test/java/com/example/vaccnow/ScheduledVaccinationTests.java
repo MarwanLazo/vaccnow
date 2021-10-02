@@ -57,8 +57,7 @@ class ScheduledVaccinationTests {
         @Order(2)
         void test_scheduleVaccination() throws Exception {
                 Long from = VaccNowUtils.getTimeInMillis(new Date());
-                Long to = VaccNowUtils.getTimeInMillis(
-                                VaccNowUtils.add15MinuteToDate(VaccNowUtils.add15MinuteToDate(new Date())));
+                Long to = VaccNowUtils.getTimeInMillis(VaccNowUtils.addHoursToDate(new Date(), 2));
 
                 scheduleVaccinationService.scheduleVaccinationByPaymentMethod(PaymentMethodEnum.FAWRY,
                                 "temp11@domain.net");
@@ -74,11 +73,11 @@ class ScheduledVaccinationTests {
         void test_applied_vaccination_by_branch() throws Exception {
                 bModel = List.<BranchModel>of(BranchModel.builder().email("E1").location("L1").name("B1").phone("P1")
                                 .workStartDate(new Date()).phone("P1").workStartDate(new Date())
-                                .workEndDate(VaccNowUtils.add15MinuteToDate(new Date())).build()).stream()
+                                .workEndDate(VaccNowUtils.addMinuteToDate(new Date(), 15)).build()).stream()
                                 .map(branchMapper::mapToEntity).map(branchService::create).findFirst().get();
 
                 scheduleVaccinationService.create(ScheduleVaccination.builder().branch(bModel).email("ttemp@domain.net")
-                                .vacDesc("vacDesc").vacTime(VaccNowUtils.add15MinuteToDate(new Date())).build());
+                                .vacDesc("vacDesc").vacTime(VaccNowUtils.addMinuteToDate(new Date(), 15)).build());
 
                 mockMvc.perform(get("/scheduleVaccination/appliedByBranchId/1")).andExpect(status().isOk())
                                 .andExpect(jsonPath("$", Matchers.hasSize(1)))
