@@ -13,4 +13,6 @@ public interface VaccineBranchService extends BaseService<VaccineBranch, Vaccine
 
     List<Branch> branchVaccineAvailablityByVaccineId(Integer vaccineId);
 
+    VaccineBranch saveVaccineBranch(Integer branchId, Integer vaccineId);
+
 }

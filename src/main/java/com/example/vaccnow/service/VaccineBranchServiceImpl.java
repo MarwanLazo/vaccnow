@@ -10,31 +10,48 @@ import com.example.vaccnow.entity.VaccineBranchPK;
 import com.example.vaccnow.repository.VaccineBranchRepository;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class VaccineBranchServiceImpl extends BaseServiceImpl<VaccineBranch, VaccineBranchPK, VaccineBranchRepository>
-        implements VaccineBranchService {
+                implements VaccineBranchService {
 
-    public VaccineBranchServiceImpl(VaccineBranchRepository repo) {
-        super(repo);
-    }
+        private VaccineService vaccineService;
+        private BranchService branchService;
 
-    @Override
-    public List<Vaccine> getVaccineModelByBranchId(Integer branchId) {
+        public VaccineBranchServiceImpl(VaccineBranchRepository repo, VaccineService vaccineService,
+                        BranchService branchService) {
+                super(repo);
+                this.vaccineService = vaccineService;
+                this.branchService = branchService;
+        }
 
-        return repo
-                .findAll((root, query, criteriaBuilder) -> criteriaBuilder
-                        .equal(root.get("id").get("branchId").get("id"), branchId))
-                .stream().map(VaccineBranch::getId).map(VaccineBranchPK::getVaccine).collect(Collectors.toList());
-    }
+        @Override
+        public List<Vaccine> getVaccineModelByBranchId(Integer branchId) {
 
-    @Override
-    public List<Branch> branchVaccineAvailablityByVaccineId(Integer vaccineId) {
+                return repo.findAll((root, query, criteriaBuilder) -> criteriaBuilder
+                                .equal(root.get("id").get("branchId").get("id"), branchId)).stream()
+                                .map(VaccineBranch::getId).map(VaccineBranchPK::getVaccine)
+                                .collect(Collectors.toList());
+        }
 
-        return repo
-                .findAll((root, query, criteriaBuilder) -> criteriaBuilder
-                        .equal(root.get("id").get("vaccine").get("id"), vaccineId))
-                .stream().map(VaccineBranch::getId).map(VaccineBranchPK::getBranchId).collect(Collectors.toList());
-    }
+        @Override
+        public List<Branch> branchVaccineAvailablityByVaccineId(Integer vaccineId) {
+
+                return repo.findAll((root, query, criteriaBuilder) -> criteriaBuilder
+                                .equal(root.get("id").get("vaccine").get("id"), vaccineId)).stream()
+                                .map(VaccineBranch::getId).map(VaccineBranchPK::getBranchId)
+                                .collect(Collectors.toList());
+        }
+
+        @Override
+        @Transactional
+        public VaccineBranch saveVaccineBranch(Integer branchId, Integer vaccineId) {
+                Branch branch = branchService.findById(branchId);
+                Vaccine vaccine = vaccineService.findById(vaccineId);
+                repo.deleteById(VaccineBranchPK.builder().branchId(branch).vaccine(vaccine).build());
+                return create(VaccineBranch.builder()
+                                .id(VaccineBranchPK.builder().branchId(branch).vaccine(vaccine).build()).build());
+        }
 
 }
