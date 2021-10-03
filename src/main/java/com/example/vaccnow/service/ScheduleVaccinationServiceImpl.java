@@ -54,13 +54,13 @@ public class ScheduleVaccinationServiceImpl
         ScheduleVaccination en = null;
         if (scheduleVaccination.isEmpty()) {
             en = ScheduleVaccination.builder().paymentMethod(payment).email(email)
-                    .request(VaccNowUtils.getRandomScheduledVaccinationRequest())
                     .vacDesc("A scheduled vaccination process Done ").vacTime(vacTime).build();
             en = create(en);
         } else {
             en = scheduleVaccination.get();
-            en.setVacTime(vacTime);
         }
+        en.setVacTime(vacTime);
+        en.setRequest(VaccNowUtils.getRandomScheduledVaccinationRequest());
         sendMail(en);
         log.info("Vaccination request scheduled ::({})", en);
         return en;
