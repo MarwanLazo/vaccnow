@@ -5,6 +5,7 @@
  It provides API to check a specific vaccine locations(Branch) , All branches , Branch Working hours (From , to)
  It provide payment method 'provide Email and payment method, recieve email with a Schedule Vaccination.
  also show all confirmed Vaccination ( from : to Dates) , all branch Vaccinations 
+ Check availiablity for Vaccine per branch 
 
 ## Tools ::
    Java 11
