@@ -62,8 +62,11 @@ class ScheduledVaccinationTests {
                 scheduleVaccinationService.scheduleVaccConfirmationByPaymentEmail(PaymentMethodEnum.CREDIT,
                                 "temp12@domain.net");
 
-                mockMvc.perform(get("/scheduleVaccination/confirmed/" + from + "/" + to)).andExpect(status().isOk())
-                                .andExpect(jsonPath("$", Matchers.hasSize(2)));
+                String result = mockMvc.perform(get("/scheduleVaccination/confirmed/" + from + "/" + to))
+                                .andExpect(status().isOk()).andExpect(jsonPath("$", Matchers.hasSize(2))).andReturn()
+                                .getResponse().getContentAsString();
+
+                System.out.println(result);
         }
 
         @Test
