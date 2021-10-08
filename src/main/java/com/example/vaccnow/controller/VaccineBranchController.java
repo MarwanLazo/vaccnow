@@ -2,7 +2,6 @@ package com.example.vaccnow.controller;
 
 import com.example.vaccnow.entity.VaccineBranchPK;
 import com.example.vaccnow.model.VaccineBranchModel;
-import com.example.vaccnow.model.VaccineBranchModelPK;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
