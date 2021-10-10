@@ -60,8 +60,8 @@ public abstract class BaseControllerImpl<Model extends BaseModel, PK extends Ser
     }
 
     @Override
-    public ResponseEntity<Void> delete(PK model) {
-        service.deleteById(model);
+    public ResponseEntity<Void> delete(PK id) {
+        service.deleteById(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
