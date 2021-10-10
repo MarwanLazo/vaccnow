@@ -59,4 +59,17 @@ public abstract class BaseControllerImpl<Model extends BaseModel, PK extends Ser
     protected void doBeforeUpdate(Model model) {
     }
 
+    @Override
+    public ResponseEntity<Void> delete(PK model) {
+        service.deleteById(model);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<Model> findById(PK id) {
+        EN en = service.findById(id);
+        Model model = mapper.mapToModel(en);
+        return new ResponseEntity<>(model, HttpStatus.OK);
+    }
+
 }

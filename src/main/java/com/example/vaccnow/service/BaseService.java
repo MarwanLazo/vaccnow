@@ -16,4 +16,6 @@ public interface BaseService<EN extends BaseEntity<? extends Serializable>, PK e
     EN update(EN en);
 
     void deleteAll();
+
+    void deleteById(PK id);
 }

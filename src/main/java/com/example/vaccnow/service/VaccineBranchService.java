@@ -15,4 +15,8 @@ public interface VaccineBranchService extends BaseService<VaccineBranch, Vaccine
 
     VaccineBranch saveVaccineBranch(Integer branchId, Integer vaccineId);
 
+    VaccineBranch findById(Integer branchId, Integer vaccineId);
+
+    void deleteById(Integer branchId, Integer vaccineId);
+
 }

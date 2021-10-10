@@ -50,4 +50,12 @@ public class BaseServiceImpl<EN extends BaseEntity<? extends Serializable>, PK e
         return en;
     }
 
+    @Override
+    public void deleteById(PK id) {
+        repo.findById(id).ifPresent(en -> {
+            log.warn("Delete Entity  '({})'  with Id : ({}) ", en.getClass(), id);
+            repo.delete(en);
+        });
+    }
+
 }

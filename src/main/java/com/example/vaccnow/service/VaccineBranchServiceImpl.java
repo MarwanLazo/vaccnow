@@ -8,9 +8,7 @@ import com.example.vaccnow.entity.Branch;
 import com.example.vaccnow.entity.Vaccine;
 import com.example.vaccnow.entity.VaccineBranch;
 import com.example.vaccnow.entity.VaccineBranchPK;
-import com.example.vaccnow.repository.BranchRepository;
 import com.example.vaccnow.repository.VaccineBranchRepository;
-import com.example.vaccnow.repository.VaccineRepository;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,14 +17,8 @@ import org.springframework.transaction.annotation.Transactional;
 public class VaccineBranchServiceImpl extends BaseServiceImpl<VaccineBranch, VaccineBranchPK, VaccineBranchRepository>
                 implements VaccineBranchService {
 
-        private VaccineRepository vaccineRepository;
-        private BranchRepository branchRepository;
-
-        public VaccineBranchServiceImpl(VaccineBranchRepository repo, VaccineRepository vaccineRepository,
-                        BranchRepository branchRepository) {
+        public VaccineBranchServiceImpl(VaccineBranchRepository repo) {
                 super(repo);
-                this.vaccineRepository = vaccineRepository;
-                this.branchRepository = branchRepository;
         }
 
         @Override
@@ -50,16 +42,23 @@ public class VaccineBranchServiceImpl extends BaseServiceImpl<VaccineBranch, Vac
         @Override
         @Transactional
         public VaccineBranch saveVaccineBranch(Integer branchId, Integer vaccineId) {
-                Optional<Branch> branch = branchRepository.findById(branchId);
-                Optional<Vaccine> vaccine = vaccineRepository.findById(vaccineId);
-                if (branch.isPresent() && vaccine.isPresent()) {
-                        repo.findById(VaccineBranchPK.builder().branchId(branch.get()).vaccine(vaccine.get()).build())
-                                        .ifPresent(repo::delete);
-                        return create(VaccineBranch.builder().id(
-                                        VaccineBranchPK.builder().branchId(branch.get()).vaccine(vaccine.get()).build())
-                                        .build());
+
+                Optional<VaccineBranch> vaccineBranch = repo.findById(branchId, vaccineId);
+                if (vaccineBranch.isPresent()) {
+                        repo.delete(vaccineBranch.get());
+                        return create(vaccineBranch.get());
                 }
                 return null;
+        }
+
+        @Override
+        public VaccineBranch findById(Integer branchId, Integer vaccineId) {
+                return repo.findById(branchId, vaccineId).orElse(null);
+        }
+
+        @Override
+        public void deleteById(Integer branchId, Integer vaccineId) {
+                repo.findById(branchId, vaccineId).ifPresent(repo::delete);
         }
 
 }

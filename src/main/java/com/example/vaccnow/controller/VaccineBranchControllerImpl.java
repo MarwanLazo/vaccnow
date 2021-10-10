@@ -26,7 +26,19 @@ public class VaccineBranchControllerImpl extends
         VaccineBranch en = service.saveVaccineBranch(branchId, vaccineId);
         VaccineBranchModel model = mapper.mapToModel(en);
         return new ResponseEntity<>(model, HttpStatus.OK);
+    }
 
+    @Override
+    public ResponseEntity<Void> delete(Integer branchId, Integer vaccineId) {
+        service.deleteById(branchId, vaccineId);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<VaccineBranchModel> findById(Integer branchId, Integer vaccineId) {
+        VaccineBranch en = service.findById(branchId, vaccineId);
+        VaccineBranchModel model = mapper.mapToModel(en);
+        return new ResponseEntity<>(model, HttpStatus.OK);
     }
 
 }
