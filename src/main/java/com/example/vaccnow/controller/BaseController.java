@@ -3,6 +3,8 @@ package com.example.vaccnow.controller;
 import java.io.Serializable;
 import java.util.List;
 
+import javax.validation.Valid;
+
 import com.example.vaccnow.model.BaseModel;
 
 import org.springframework.http.ResponseEntity;
@@ -19,10 +21,10 @@ public interface BaseController<Model extends BaseModel, PK extends Serializable
     ResponseEntity<List<Model>> findAll();
 
     @PostMapping
-    ResponseEntity<Model> create(@RequestBody Model model);
+    ResponseEntity<Model> create(@Valid @RequestBody Model model);
 
     @PutMapping
-    ResponseEntity<Model> update(@RequestBody Model model);
+    ResponseEntity<Model> update(@RequestBody @Valid Model model);
 
     @DeleteMapping("{id}")
     ResponseEntity<Void> delete(@PathVariable PK id);

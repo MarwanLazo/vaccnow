@@ -3,6 +3,8 @@ package com.example.vaccnow.controller;
 import java.io.Serializable;
 import java.util.List;
 
+import javax.validation.Valid;
+
 import com.example.vaccnow.entity.BaseEntity;
 import com.example.vaccnow.mapping.BaseMapping;
 import com.example.vaccnow.model.BaseModel;
@@ -28,7 +30,7 @@ public abstract class BaseControllerImpl<Model extends BaseModel, PK extends Ser
     }
 
     @Override
-    public ResponseEntity<Model> create(Model model) {
+    public ResponseEntity<Model> create(@Valid Model model) {
         doBeforeCreate(model);
         EN en = mapper.mapToEntity(model);
         en = service.create(en);
@@ -37,7 +39,7 @@ public abstract class BaseControllerImpl<Model extends BaseModel, PK extends Ser
     }
 
     @Override
-    public ResponseEntity<Model> update(Model model) {
+    public ResponseEntity<Model> update(@Valid Model model) {
         doBeforeUpdate(model);
 
         EN en = mapper.mapToEntity(model);
