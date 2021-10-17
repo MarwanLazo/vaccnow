@@ -5,6 +5,8 @@ import java.util.Date;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 
+import com.example.vaccnow.util.ContactNumber;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -22,14 +24,17 @@ public class BranchModel implements BaseModel {
 
     @NotBlank(message = "Name is mandatory")
     private String name;
+
     private String location;
 
+    @ContactNumber
     @NotBlank(message = "Phone is mandatory")
     private String phone;
 
     @Email(message = "Email Frmat Error")
     @NotBlank(message = "Email is mandatory")
     private String email;
+
     private boolean vaccineId;
 
     private Date workStartDate;
