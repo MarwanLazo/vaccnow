@@ -3,8 +3,6 @@ package com.example.vaccnow.service;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import javax.persistence.criteria.Predicate;
 
@@ -14,6 +12,7 @@ import com.example.vaccnow.util.EmailService;
 import com.example.vaccnow.util.PaymentMethodEnum;
 import com.example.vaccnow.util.VaccNowUtils;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import lombok.SneakyThrows;
@@ -26,6 +25,7 @@ public class ScheduleVaccinationServiceImpl
         implements ScheduleVaccinationService {
 
     private final EmailService emailService;
+    private @Value("${mail.from:error No default mail registered}") String mailSender;
 
     public ScheduleVaccinationServiceImpl(ScheduleVaccinationRepository repo, EmailService emailService) {
         super(repo);
@@ -79,9 +79,12 @@ public class ScheduleVaccinationServiceImpl
             log.info("Send Mail To ({})  and His Request Id ({})", en.getEmail(), en.getRequest());
             log.info("Vaccination request scheduled Confirmation Mail SENT");
 
-            // emailService.sendSimpleMessage(en.getEmail(), "Vaccination Schedule",
-            // String.format("Hello !, %n Your Vaccination Sheduled Date on %tc",
-            // en.getVacTime()));
+            // Email Sender
+            if (!(/* "default@domain.com".equals(mailSender) || */
+            "error No default mail registered".equals(mailSender))) {
+                emailService.sendMessage(en.getEmail(), mailSender, "Vaccination Schedule",
+                        String.format("Hello !, %n Your Vaccination Sheduled Date on %tc", en.getVacTime()));
+            }
 
             en.setConfirmed(true);
             update(en);
