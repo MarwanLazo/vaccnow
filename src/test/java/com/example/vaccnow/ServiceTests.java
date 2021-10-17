@@ -32,7 +32,7 @@ class ServiceTests {
 
     @BeforeEach
     public void setup() {
-        branch = Branch.builder().id(1).email("E1").location("L1").name("B1").phone("P1").build();
+        branch = Branch.builder().id(1).email("E1").location("L1").name("B1").phone("01000258741").build();
         all_branches = List.<Branch>of(branch);
 
         vaccine = Vaccine.builder().name("V1").country("C1").manufacture("M1").notes("Notes 1").build();

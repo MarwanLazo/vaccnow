@@ -57,8 +57,10 @@ class VaccineBranchTests {
 
         private @BeforeEach void setup() {
                 all_branchModels = List.<BranchModel>of(
-                                BranchModel.builder().email("E1").location("L1").name("B1").phone("P1").build(),
-                                BranchModel.builder().email("E2").location("L2").name("B2").phone("P2").build());
+                                BranchModel.builder().email("E1").location("L1").name("B1").phone("01000258741")
+                                                .build(),
+                                BranchModel.builder().email("E2").location("L2").name("B2").phone("01000258741")
+                                                .build());
 
                 all_VaccineModels = List.<VaccineModel>of(
                                 VaccineModel.builder().name("V1").country("C1").manufacture("M1").notes("Notes 1")

@@ -52,8 +52,8 @@ class ApplicationTests {
 
 	@BeforeEach
 	public void setup() {
-		all_branchModels = List.<BranchModel>of(BranchModel.builder().email("E1").location("L1").name("B1").phone("P1")
-				.workStartDate(new Date()).phone("P1").workStartDate(new Date())
+		all_branchModels = List.<BranchModel>of(BranchModel.builder().email("E1").location("L1").name("B1")
+				.phone("01000251425").workStartDate(new Date()).phone("01000258741").workStartDate(new Date())
 				.workEndDate(VaccNowUtils.addMinuteToDate(new Date(), 15)).build());
 		all_branchModels.stream().map(branchMapper::mapToEntity).map(branchService::create)
 				.collect(Collectors.toList());
