@@ -69,9 +69,10 @@ class ScheduledVaccinationTests {
         @Order(3)
         void test_applied_vaccination_by_branch() throws Exception {
 
-                Branch branch = branchService.create(Branch.builder().email("E1").location("L1").name("B1").phone("P1")
-                                .workStartDate(new Date()).phone("P1").workStartDate(new Date())
-                                .workEndDate(VaccNowUtils.addHoursToDate(new Date(), 8)).build());
+                Branch branch = branchService.create(Branch.builder().email("E1").location("L1").name("B1")
+                                .phone("01000258741").workStartDate(new Date()).phone("01000258741")
+                                .workStartDate(new Date()).workEndDate(VaccNowUtils.addHoursToDate(new Date(), 8))
+                                .build());
 
                 scheduleVaccinationService.create(ScheduleVaccination.builder().branch(branch).email("ttemp@domain.net")
                                 .vacDesc("vacDesc").vacTime(VaccNowUtils.addMinuteToDate(new Date(), 15)).build());

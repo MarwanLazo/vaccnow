@@ -7,6 +7,7 @@ public class ContactNumberValidator implements ConstraintValidator<ContactNumber
 
     @Override
     public boolean isValid(String value, ConstraintValidatorContext context) {
+        value = value.replace(" ", "").trim();
         return value != null && value.matches("[0-9]+") && value.length() > 8 && value.length() < 14;
     }
 
