@@ -3,6 +3,8 @@ package com.example.vaccnow;
 import java.util.Optional;
 import java.util.Properties;
 
+import javax.sql.DataSource;
+
 import com.example.vaccnow.exceptions.LoggingInterceptor;
 
 import org.modelmapper.ModelMapper;
@@ -16,6 +18,8 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+
+import liquibase.integration.spring.SpringLiquibase;
 
 @Configuration
 @EnableJpaAuditing(auditorAwareRef = "auditorAware")
@@ -61,10 +65,11 @@ class AppConfig {
     }
 
     @Bean
-    CommandLineRunner run() {
-        return ar -> {
-
-        };
+    public SpringLiquibase liquibase(DataSource dataSource) {
+        SpringLiquibase liquibase = new SpringLiquibase();
+        liquibase.setChangeLog("classpath:liquibase-changeLog.xml");
+        liquibase.setDataSource(dataSource);
+        return liquibase;
     }
 
 }

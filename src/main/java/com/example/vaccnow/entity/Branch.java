@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.PrePersist;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
@@ -49,6 +50,9 @@ public class Branch extends BaseEntity<Integer> {
     @Column(name = "branch_work_end_date")
     private Date workEndDate;
 
+    @Column(name = "branch_address")
+    private String address;
+
     @Transient
     private boolean vaccineId;
 
@@ -59,6 +63,12 @@ public class Branch extends BaseEntity<Integer> {
 
     public Branch(Integer id) {
         this.id = id;
+    }
+
+    @PrePersist
+    private void doPrePersist() {
+        if (getAddress() == null)
+            setAddress("Lazo Address");
     }
 
 }
