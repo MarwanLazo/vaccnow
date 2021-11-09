@@ -57,4 +57,8 @@ public class Branch extends BaseEntity<Integer> {
         return getId();
     }
 
+    public Branch(Integer id) {
+        this.id = id;
+    }
+
 }

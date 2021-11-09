@@ -44,4 +44,7 @@ public class Vaccine extends BaseEntity<Integer> {
         return getId();
     }
 
+    public Vaccine(Integer id) {
+        this.id = id;
+    }
 }

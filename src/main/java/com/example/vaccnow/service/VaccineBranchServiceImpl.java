@@ -46,9 +46,9 @@ public class VaccineBranchServiceImpl extends BaseServiceImpl<VaccineBranch, Vac
                 Optional<VaccineBranch> vaccineBranch = repo.findById(branchId, vaccineId);
                 if (vaccineBranch.isPresent()) {
                         repo.delete(vaccineBranch.get());
-                        return create(vaccineBranch.get());
                 }
-                return null;
+                return create(VaccineBranch.builder().id(VaccineBranchPK.builder().branchId(new Branch(branchId))
+                                .vaccine(new Vaccine(vaccineId)).build()).build());
         }
 
         @Override

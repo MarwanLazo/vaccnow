@@ -12,9 +12,11 @@ import com.example.vaccnow.service.BaseService;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 import lombok.AllArgsConstructor;
 
+@CrossOrigin
 @AllArgsConstructor
 public abstract class BaseControllerImpl<Model extends BaseModel, PK extends Serializable, EN extends BaseEntity<PK>, Service extends BaseService<EN, PK>, Mapper extends BaseMapping<EN, Model>>
         implements BaseController<Model, PK> {
