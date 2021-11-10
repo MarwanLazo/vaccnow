@@ -4,6 +4,7 @@ import java.util.Optional;
 import java.util.Properties;
 
 import javax.sql.DataSource;
+import javax.validation.constraints.NotNull;
 
 import com.example.vaccnow.exceptions.LoggingInterceptor;
 
@@ -66,9 +67,11 @@ class AppConfig {
 
     @Bean
     @ConditionalOnProperty("spring.liquibase.enabled")
-    public SpringLiquibase liquibase(DataSource dataSource) {
+    public SpringLiquibase liquibase(@NotNull DataSource dataSource) {
         SpringLiquibase liquibase = new SpringLiquibase();
         liquibase.setChangeLog("classpath:liquibase-changeLog.xml");
+        liquibase.setDatabaseChangeLogLockTable("db_change_log");
+        liquibase.setDatabaseChangeLogTable("db_change");
         liquibase.setDataSource(dataSource);
         return liquibase;
     }
