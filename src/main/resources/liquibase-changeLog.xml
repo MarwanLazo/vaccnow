@@ -16,4 +16,16 @@
     </changeSet>
 
 
+    <changeSet author="Lazo" id="create_MyTable" labels="MyTable Changes">
+
+        <createTable tableName="MyTable">
+            <column name="id" type="int(11)" autoIncrement="true">
+                <constraints nullable="true" primaryKey="true" unique="true" />
+            </column>
+            <column name="tb_name" type="varchar(255)" />
+        </createTable>
+
+    </changeSet>
+
+
 </databaseChangeLog>
