@@ -4,6 +4,6 @@
 
 cd vaccnow
 
-@echo " Build  & Run Stage "
-mvn spring-boot:run
+@echo " Build  Stage "
+mvn clean install
 
