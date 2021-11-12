@@ -1,3 +1,5 @@
+echo "%cd%"
+
 @REM Delete Old Repo.
  del /F /Q vaccnow
 
