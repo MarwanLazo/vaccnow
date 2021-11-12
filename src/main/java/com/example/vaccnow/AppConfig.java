@@ -73,6 +73,7 @@ class AppConfig {
         liquibase.setDatabaseChangeLogLockTable("db_change_log");
         liquibase.setDatabaseChangeLogTable("db_change");
         liquibase.setDataSource(dataSource);
+        liquibase.setShouldRun(false);
         return liquibase;
     }
 
