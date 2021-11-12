@@ -1,5 +1,5 @@
 @REM Delete Old Repo.
-@REM del /F /Q vaccnow
+ del /F /Q vaccnow
 
-@REM Update repo.
-git pull
+@REM Clone repo.
+git clone https://github.com/MarwanMohamed88/vaccnow.git
