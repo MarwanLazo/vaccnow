@@ -1,5 +1,11 @@
-docker rm -f vaccnow_app_1 vaccnow_app-db_1
+@REM docker rm -f vaccnow_app_1 
 
-docker rmi -f vaccnow_app
+@REM docker rm -f vaccnow_app-db_1
 
-docker-compose -f -d .\docker-compose.yml up
+@REM docker rmi -f vaccnow_app
+
+@REM docker-compose -f -d .\docker-compose.yml up
+
+echo %time% :: %date% :: %cd%
+
+@REM docker ps

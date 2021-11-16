@@ -7,9 +7,11 @@ import javax.sql.DataSource;
 import javax.validation.constraints.NotNull;
 
 import com.example.vaccnow.exceptions.LoggingInterceptor;
+import com.example.vaccnow.util.PDFGenerator;
 
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -75,6 +77,11 @@ class AppConfig {
         liquibase.setDataSource(dataSource);
         liquibase.setShouldRun(false);
         return liquibase;
+    }
+
+    @Bean
+    CommandLineRunner run(PDFGenerator generator) {
+        return arg -> generator.generatePdfReport();
     }
 
 }
